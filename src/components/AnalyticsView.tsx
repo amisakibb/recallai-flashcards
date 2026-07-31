@@ -87,7 +87,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
             <BookOpen className="w-4 h-4 text-indigo-600" />
           </div>
           <div className="text-2xl font-black text-slate-900">{profile.todayStudiedCount}</div>
-          <p className="text-[11px] text-slate-500 font-medium">Goal: {profile.dailyGoalCards} cards</p>
+          <p className="text-[11px] text-slate-500 font-medium">{profile.totalCardsStudied} studied all-time</p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 space-y-1 shadow-2xs">

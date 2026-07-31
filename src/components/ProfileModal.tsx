@@ -56,9 +56,9 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
             <div className="p-3 bg-white rounded-xl border border-slate-200 text-xs space-y-1">
               <div className="flex items-center space-x-1 text-indigo-600 font-bold">
                 <Target className="w-4 h-4 text-indigo-600" />
-                <span>Daily Goal</span>
+                <span>Cards Studied</span>
               </div>
-              <div className="text-lg font-black text-slate-900">{profile.todayStudiedCount}/{profile.dailyGoalCards} Cards</div>
+              <div className="text-lg font-black text-slate-900">{profile.totalCardsStudied} Total</div>
             </div>
           </div>
         </div>

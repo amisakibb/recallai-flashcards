@@ -39,9 +39,17 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleNavClick = (tabId: string) => {
     if (tabId !== 'landing' && !isLoggedIn) {
       onOpenAuthModal('login');
+    } else if (tabId === 'landing' && isLoggedIn) {
+      // "Home" for a logged-in user means their dashboard, not the
+      // logged-out marketing page.
+      setActiveTab('dashboard');
     } else {
       setActiveTab(tabId);
     }
+  };
+
+  const handleLogoClick = () => {
+    setActiveTab(isLoggedIn ? 'dashboard' : 'landing');
   };
 
   const handleCreateDeckClick = () => {
@@ -67,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo */}
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveTab('landing')}>
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={handleLogoClick}>
             <div className="w-10 h-10 rounded-xl bg-indigo-600 p-0.5 flex items-center justify-center shadow-md shadow-indigo-600/20">
               <div className="w-full h-full bg-indigo-600 rounded-[10px] flex items-center justify-center">
                 <BrainCircuit className="w-6 h-6 text-white" />

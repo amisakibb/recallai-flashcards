@@ -83,15 +83,31 @@ export default function App() {
     if (!session?.user?.id) return;
 
     (async () => {
+      // Real name/email from the Supabase account itself — this is what
+      // signup actually collected, unlike the generic local default.
+      const accountName = session.user.user_metadata?.display_name || session.user.email?.split('@')[0] || '';
+      const accountEmail = session.user.email || '';
+
       const library = await pullUserLibrary(session.user.id);
       if (library) {
         skipNextPush.current = true;
         setDecks(library.decks);
         setCards(library.cards);
-        if (library.profile) setProfile(library.profile);
+        if (library.profile) {
+          // Backfill name/email from the account if the stored profile
+          // predates this fix and is still sitting on the generic default.
+          setProfile({
+            ...library.profile,
+            name: library.profile.name && library.profile.name !== 'Learner' ? library.profile.name : accountName,
+            email: library.profile.email || accountEmail,
+          });
+        }
       } else {
-        // No cloud row yet — push current local state up as their starting library.
-        pushUserLibrary(session.user.id, { decks, cards, profile });
+        // No cloud row yet — seed their starting library with the real
+        // account name/email instead of the generic local default.
+        const seededProfile = { ...profile, name: accountName, email: accountEmail };
+        setProfile(seededProfile);
+        pushUserLibrary(session.user.id, { decks, cards, profile: seededProfile });
       }
     })();
     // Only re-run when the logged-in user changes, not on every decks/cards edit.
@@ -148,6 +164,10 @@ export default function App() {
     if (!isLoggedIn && activeTab !== 'landing') {
       setActiveTab('landing');
       setIsAuthOpen(true);
+    } else if (isLoggedIn && activeTab === 'landing') {
+      // A restored session (e.g. on page refresh) shouldn't drop a logged-in
+      // user back on the logged-out marketing page.
+      setActiveTab('dashboard');
     }
   }, [isLoggedIn, activeTab, authInitialized]);
 
