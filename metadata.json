@@ -1,0 +1,6 @@
+{
+  "name": "RecallAI - AI Flashcard Platform",
+  "description": "Interactive study platform with AI flashcard & quiz generator, concept summarizer, interactive flashcard review, and progress analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
